@@ -42,10 +42,8 @@ public void OnAllPluginsLoaded()
 
 public void OnLibraryAdded(const char[] name)
 {
-	// Register this upgrade in SM:RPG
 	if(StrEqual(name, "smrpg"))
 	{
-		// Register the upgrade type.
 		SMRPG_RegisterUpgradeType("Conversion", UPGRADE_SHORTNAME, "Conversion allows the player to turn excess money into credits.", 10, true, 5, 15, 10);
 		SMRPG_SetUpgradeTranslationCallback(UPGRADE_SHORTNAME, SMRPG_TranslateUpgrade);
 
@@ -87,13 +85,10 @@ public void OnConverChangeAmountToCheck(ConVar hCvar, const char[] szOldValue, c
 	hCvMoneyConvertAmountToCheck = hCvar.IntValue;
 }
 
-// The core wants to display your upgrade somewhere. Translate it into the clients language!
 public void SMRPG_TranslateUpgrade(int client, const char[] shortname, TranslationType type, char[] translation, int maxlen)
 {
-	// Easy pattern is to use the shortname of your upgrade in the translation file
 	if(type == TranslationType_Name)
 		Format(translation, maxlen, "%T", UPGRADE_SHORTNAME, client);
-	// And "shortname description" as phrase in the translation file for the description.
 	else if(type == TranslationType_Description)
 	{
 		char sDescriptionKey[MAX_UPGRADE_SHORTNAME_LENGTH+12] = UPGRADE_SHORTNAME;
@@ -111,19 +106,15 @@ public void Event_OnPlayerSpawn(Event event, const char[] name, bool dontBroadca
 	int currentClientMoney = GetEntProp(client, Prop_Send, "m_iAccount");
 	if (currentClientMoney > hCvMoneyConvertAmountToCheck)
 	{
-		// SM:RPG is disabled?
 		if(!SMRPG_IsEnabled())
 			return;
 		
-		// The upgrade is disabled completely?
 		if(!SMRPG_IsUpgradeEnabled(UPGRADE_SHORTNAME))
 			return;
 		
-		// Are bots allowed to use this upgrade?
 		if(IsFakeClient(client) && SMRPG_IgnoreBots())
 			return;
 		
-		// Player didn't buy this upgrade yet.
 		int iLevel = SMRPG_GetClientUpgradeLevel(client, UPGRADE_SHORTNAME);
 		if(iLevel <= 0)
 			return;
