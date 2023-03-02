@@ -128,8 +128,8 @@ public void Event_OnPlayerSpawn(Event event, const char[] name, bool dontBroadca
 		if(iLevel <= 0)
 			return;
 		
-		int amountToGive = RoundToCeil((currentClientMoney - 16000) / hCvMoneyConvertRequestMoney * hCvMoneyConvertIncreaserPerLevel);
-		SetEntProp(client, Prop_Send, "m_iAccount", 16000);
+		int amountToGive = RoundToCeil((currentClientMoney - hCvMoneyConvertAmountToCheck) / hCvMoneyConvertRequestMoney * hCvMoneyConvertIncreaserPerLevel);
+		SetEntProp(client, Prop_Send, "m_iAccount", hCvMoneyConvertAmountToCheck);
 
 		if (hCvMoneyConvertType == 0)
 			SMRPG_AddClientExperience(client, amountToGive, "Convertion", false, -1);
